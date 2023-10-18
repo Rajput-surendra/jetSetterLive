@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "333594352533",
+    "project_id": "jozzbybazar-d9eb7",
+    "storage_bucket": "jozzbybazar-d9eb7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333594352533:android:406b00f8533eb0f5cbb49c",
+        "android_client_info": {
+          "package_name": "jetsetter.user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwBTAkn9hTaBVi5YOyLQ_XnhgKjyNAhtw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
