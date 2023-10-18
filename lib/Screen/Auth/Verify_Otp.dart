@@ -1372,10 +1372,12 @@ class _MobileOTPState extends State<VerifyOtp> with TickerProviderStateMixin {
         userProvider.setName(getdata[USERNAME] ?? '');
         userProvider.setEmail(getdata[EMAIL] ?? '');
         userProvider.setProfilePic(getdata[IMAGE] ?? '');
-
+        userProvider.setUserId(getdata[ID] ?? '');
+          print('___userId_______${userProvider.setUserId}_________');
         SettingProvider settingProvider =
         Provider.of<SettingProvider>(context, listen: false);
         settingProvider.saveUserDetail(
+
           getdata[ID],
           getdata[USERNAME],
           getdata[EMAIL],

@@ -132,20 +132,20 @@ class StateProfile extends State<MyProfile> with TickerProviderStateMixin {
       child: ListTile(
         trailing: const Icon(
           Icons.navigate_next,
-          color: colors.primary,
+          color: colors.ekstraColor,
         ),
         leading: title == getTranslated(context, 'YOUR_PROM_CO')
             ? Image.asset(
                 DesignConfiguration.setPngPath(img),
                 height: 25,
                 width: 25,
-                color: colors.primary,
+                color: colors.ekstraColor,
               )
             : SvgPicture.asset(
                 DesignConfiguration.setSvgPath(img),
                 height: 25,
                 width: 25,
-                color: colors.primary,
+                color: colors.ekstraColor,
               ),
         dense: true,
         title: Text(
@@ -353,7 +353,7 @@ class StateProfile extends State<MyProfile> with TickerProviderStateMixin {
                           ),
                           Consumer<UserProvider>(
                             builder: (context, userProvider, _) {
-                              return userProvider.curUserName == ''
+                              return userProvider.userId == null
                                   ? Padding(
                                       padding: const EdgeInsetsDirectional.only(
                                           top: 7),
@@ -395,8 +395,8 @@ class StateProfile extends State<MyProfile> with TickerProviderStateMixin {
   Widget getUserImage(
     String profileImage,
     BuildContext context,
-    VoidCallback? onBtnSelected,
-  ) {
+    VoidCallback? onBtnSelected)
+    {
     return Stack(
       children: <Widget>[
         GestureDetector(
@@ -473,7 +473,6 @@ class StateProfile extends State<MyProfile> with TickerProviderStateMixin {
       enableDrag: true,
     );
   }
-
   openEditBottomSheet(BuildContext context) {
     return openChangeUserDetailsBottomSheet(context);
   }

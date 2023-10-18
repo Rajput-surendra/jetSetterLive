@@ -53,7 +53,7 @@ import 'Widget/orderSummeryWidget.dart';
 import 'Widget/paymentWidget.dart';
 import 'Widget/saveLaterIteamWidget.dart';
 import 'Widget/setAddress.dart';
-double allTotalPrice = 0.0;
+
 class Cart extends StatefulWidget {
   final bool fromBottom;
 
@@ -114,7 +114,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
         .id!);
     context.read<CartProvider>().productIds.remove(context
         .read<CartProvider>().saveLaterList[index].productList![0].prVarientList![selectedPos].id!);
-    context.read<CartProvider>().oriPrice = context.read<CartProvider>().oriPrice + total + selectedAmount ;
+    context.read<CartProvider>().oriPrice = context.read<CartProvider>().oriPrice + total ;
     context.read<CartProvider>().addCartItem(context.read<CartProvider>().saveLaterList[index]);
     context.read<CartProvider>().saveLaterList.removeAt(index);
 
@@ -184,6 +184,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
       ),
     );
   }
+
 
   callApi() async {
     context.read<CartProvider>().setProgress(false);
@@ -1250,9 +1251,12 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                 ),
               );
   }
-  final List<String> amount = ['10', '20', '30', '50',];
+  final List<String> amount = ['10', '30', '50',];
   List<String> onSelectedAmount = [];
   var selectedAmount;
+  double allTotalPrice = 0.0;
+  List<int> numbers = [10, 30, 50];
+  var selectedNumber;
 
   checkout() {
     deviceHeight = MediaQuery.of(context).size.height;
@@ -1314,55 +1318,107 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                                 cartItems(context
                                                     .read<CartProvider>()
                                                     .cartList),
+
                                                 Card(
                                                   child: Padding(
                                                     padding: const EdgeInsets.all(8.0),
-                                                    child: Container(
-                                                      height: 50,
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text("Tip your delivery partner",style: TextStyle(color: colors.blackTemp,fontSize: 15,fontWeight: FontWeight.bold),),
+                                                        SizedBox(height: 3,),
+                                                        Text("Your kindness means a lot! 100% of your tip will go directly to them",style: TextStyle(color: colors.black54,fontSize: 11,fontWeight: FontWeight.bold),),
+                                                        SizedBox(height: 3,),
+                                                        Container(
+                                                          height: 50,
+                                                          width: MediaQuery.of(context).size.width/1.1,
+                                                          child: ListView.builder(
+                                                            shrinkWrap: true,
+                                                            scrollDirection: Axis.horizontal,
+                                                            itemCount: numbers.length,
+                                                            itemBuilder: (context, index) {
+                                                              return InkWell(
+                                                                onTap: () {
+                                                                  setState(() {
+                                                                    selectedNumber = numbers[index];
+                                                                  });
+                                                                  allTotalPrice =  context.read<CartProvider>().oriPrice + int.parse(selectedNumber.toString());
+                                                                  print('____allTotalPrice______${allTotalPrice}_________');
+                                                                },
+                                                                child: Card(
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(10.0),
+                                                                  ),
+                                                                  elevation: 2,
+                                                                  child: Container(
+                                                                    decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(10),
+                                                                      color:selectedNumber == numbers[index]
+                                                                          ? colors.primary // Change the color when selected
+                                                                          : colors.whiteTemp.withOpacity(0.4),
+                                                                    ),
+                                                                    height: 50,
+                                                                    width: 70,
 
-                                                      child: ListView.builder(
-                                                        shrinkWrap: true,
-                                                        scrollDirection: Axis.horizontal,
-                                                        itemCount: amount.length ?? 0,
-                                                        itemBuilder: (BuildContext context, int index) {
-                                                          return InkWell(
-                                                            onTap: () {
+                                                                    child: Center(child: Text('₹${numbers[index]}',style: TextStyle(color:selectedNumber == numbers[index] ? colors.whiteTemp:colors.blackTemp,fontSize: 18),)),
 
-                                                              if(onSelectedAmount.contains(amount[index])){
-                                                                onSelectedAmount.remove(amount[index]);
-                                                                selectedAmount = onSelectedAmount.join(",");
-                                                                //print("selectedd ${onSelectedWeek}");
-                                                              } else{
-                                                                onSelectedAmount.add(amount[index]);
-                                                                selectedAmount = onSelectedAmount.join(",");
-                                                                print("selectedd@@@@@ ${onSelectedAmount}");
-                                                              }
-                                                              setState(() {
-
-
-                                                              });
-                                                              allTotalPrice =  context.read<CartProvider>().oriPrice + double.parse(selectedAmount);
-                                                              print('____dsadas______${allTotalPrice}_________');
-                                                            },
-                                                            child: SizedBox(
-
-                                                              height: 20,
-                                                              width: 90,
-                                                              child: Card(
-                                                                color: onSelectedAmount.contains(amount[index]) ? colors.primary:Colors.white70,
-                                                                child: Center(child: Text(amount[index]),
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                          //   ListTile(
-                                                          //   title:
-                                                          // );
-                                                        },
-                                                      ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                  ),
+                                                  )
                                                 ),
+                                                // Card(
+                                                //   child: Padding(
+                                                //     padding: const EdgeInsets.all(8.0),
+                                                //     child: Container(
+                                                //       height: 50,
+                                                //       width: MediaQuery.of(context).size.width/1.1,
+                                                //       child: ListView.builder(
+                                                //         shrinkWrap: true,
+                                                //         scrollDirection: Axis.horizontal,
+                                                //         itemCount: amount.length ?? 0,
+                                                //         itemBuilder: (BuildContext context, int index) {
+                                                //           return InkWell(
+                                                //             onTap: () {
+                                                //               if(onSelectedAmount.contains(amount[index])){
+                                                //                 onSelectedAmount.remove(amount[index]);
+                                                //                 selectedAmount = onSelectedAmount.join(",");
+                                                //                 //print("selectedd ${onSelectedWeek}");
+                                                //               } else{
+                                                //                 onSelectedAmount.add(amount[index]);
+                                                //                 selectedAmount = onSelectedAmount.join(",");
+                                                //                 print("selectedd@@@@@ ${onSelectedAmount}");
+                                                //               }
+                                                //               setState(() {
+                                                //
+                                                //
+                                                //               });
+                                                //               allTotalPrice =  context.read<CartProvider>().oriPrice + double.parse(selectedAmount);
+                                                //               print('____dsadas______${allTotalPrice}_________');
+                                                //             },
+                                                //             child: SizedBox(
+                                                //               height: 20,
+                                                //               width: 90,
+                                                //               child: Card(
+                                                //                 color: onSelectedAmount.contains(amount[index]) ? colors.primary:Colors.white70,
+                                                //                 child: Center(child: Text(amount[index],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15,color: onSelectedAmount.contains(amount[index]) ? colors.whiteTemp:colors.blackTemp),),
+                                                //                 ),
+                                                //               ),
+                                                //             ),
+                                                //           );
+                                                //           //   ListTile(
+                                                //           //   title:
+                                                //           // );
+                                                //         },
+                                                //       ),
+                                                //     ),
+                                                //   ),
+                                                // ),
                                                 OrderSummery(
                                                   cartList: context
                                                       .read<CartProvider>()
@@ -1384,6 +1440,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                       ],
                                     ),
                                   ),
+
                                   Container(
                                     color: Theme.of(context).colorScheme.white,
                                     child: Row(
@@ -1396,6 +1453,18 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
+
+                                              allTotalPrice == null ?  Text(
+                                                '${DesignConfiguration.getPriceFormat(context, context.read<CartProvider>().oriPrice)!} ',
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .fontColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'ubuntu',
+                                                ),
+                                              ):
+
                                               Text(
                                                 // '${DesignConfiguration.getPriceFormat(context, context.read<CartProvider>().oriPrice)!} ',
                                                 '${allTotalPrice} ',
@@ -1407,6 +1476,9 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                                   fontFamily: 'ubuntu',
                                                 ),
                                               ),
+
+
+
                                               Text(
                                                 '${context.read<CartProvider>().cartList.length} Items',
                                                 style: const TextStyle(

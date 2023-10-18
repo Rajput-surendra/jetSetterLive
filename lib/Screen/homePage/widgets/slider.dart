@@ -94,7 +94,7 @@ class _CustomSliderState extends State<CustomSlider> {
   }
 
   void _animateSlider() {
-    Future.delayed(const Duration(seconds: 10)).then(
+    Future.delayed(const Duration(seconds: 5)).then(
       (_) {
         if (mounted) {
           int nextPage = _controller.hasClients
@@ -109,7 +109,7 @@ class _CustomSliderState extends State<CustomSlider> {
             _controller
                 .animateToPage(
                   nextPage,
-                  duration: const Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 10),
                   curve: Curves.linear,
                 )
                 .then(
@@ -152,7 +152,7 @@ class _CustomSliderState extends State<CustomSlider> {
             milliseconds: 150,
           ),
           fadeOutDuration: const Duration(
-            milliseconds: 150,
+            milliseconds: 10,
           ),
           fit: BoxFit.fill,
           height: height,

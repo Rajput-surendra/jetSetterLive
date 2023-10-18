@@ -313,16 +313,21 @@ getCurrentLocationCard(){
             onTap: (){
 
             },
-            child: Text(
-              _currentAddress != null
-                  ? _currentAddress!
-                  : "please wait..",overflow: TextOverflow.ellipsis, textAlign: TextAlign.center,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: colors.blackTemp,
-                  fontSize: 15, overflow: TextOverflow.ellipsis
-              ),
-            ),
+            child: Row(
+              children: [
+                Icon(Icons.location_on_outlined),
+                Text(
+                  _currentAddress != null
+                      ? _currentAddress!
+                      : "please wait..",overflow: TextOverflow.ellipsis, textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: colors.blackTemp,
+                      fontSize: 15, overflow: TextOverflow.ellipsis
+                  ),
+                ),
+              ],
+            )
           ),
         ),
       ),
@@ -449,7 +454,7 @@ getCurrentLocationCard(){
                   InkWell(
                     onTap: (){
                       Fluttertoast.showToast(
-                          msg: "Comming soon hotel",
+                          msg: "Coming soon hotel",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
@@ -470,7 +475,7 @@ getCurrentLocationCard(){
                   InkWell(
                     onTap: (){
                       Fluttertoast.showToast(
-                          msg: "Comming soon activity",
+                          msg: "Coming soon activity",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
@@ -491,7 +496,7 @@ getCurrentLocationCard(){
                   InkWell(
                     onTap: (){
                       Fluttertoast.showToast(
-                          msg: "Comming soon plan",
+                          msg: "Coming soon plan",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
@@ -512,7 +517,7 @@ getCurrentLocationCard(){
                   InkWell(
                     onTap: (){
                       Fluttertoast.showToast(
-                          msg: "Comming soon train",
+                          msg: "Coming soon train",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
@@ -541,7 +546,7 @@ getCurrentLocationCard(){
                   InkWell(
                     onTap: (){
                       Fluttertoast.showToast(
-                          msg: "Comming soon bus",
+                          msg: "Coming soon bus",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
@@ -562,7 +567,7 @@ getCurrentLocationCard(){
                   InkWell(
                     onTap: (){
                       Fluttertoast.showToast(
-                          msg: "Comming soon taxi",
+                          msg: "Coming soon taxi",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
@@ -583,7 +588,7 @@ getCurrentLocationCard(){
                   InkWell(
                     onTap: (){
                       Fluttertoast.showToast(
-                          msg: "Comming soon passport",
+                          msg: "Coming soon passport",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,
@@ -604,7 +609,7 @@ getCurrentLocationCard(){
                   InkWell(
                     onTap: (){
                       Fluttertoast.showToast(
-                          msg: "Comming soon visa",
+                          msg: "Coming soon visa",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.TOP,
                           timeInSecForIosWeb: 1,

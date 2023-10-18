@@ -82,9 +82,7 @@ class UserProvider extends ChangeNotifier {
   void setUserId(String? count) {
     _userId = count;
   }
-
   UserStatus get userStatus => _userStatus;
-
   changeStatus(UserStatus status) {
     _userStatus = status;
     notifyListeners();

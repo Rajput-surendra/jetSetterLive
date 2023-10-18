@@ -975,7 +975,7 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
                   //  forgetPass(),
                    //isMobile==false?forgetPass():SizedBox(),
                     loginBtn(),
-                    setDontHaveAcc(),
+                  //  setDontHaveAcc(),
                   ],
                 ),
               ),
@@ -1097,10 +1097,5 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
       ),
     );
   }
-
-
-
-
-
 
 }

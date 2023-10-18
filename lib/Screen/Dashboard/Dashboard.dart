@@ -298,45 +298,51 @@ class _DashboardPageState extends State<Dashboard>
     );
   }
   getCurrentLocationCard(){
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PlacePicker(
-                apiKey: Platform.isAndroid
-                    ? "AIzaSyDPsdTq-a4AHYHSNvQsdAlZgWvRu11T9pM"
-                    : "AIzaSyDPsdTq-a4AHYHSNvQsdAlZgWvRu11T9pM",
-                onPlacePicked: (result) {
-                  print(result.formattedAddress);
-                  setState(() {
-                    _currentAddress = result.formattedAddress.toString();
-                    homelat = result.geometry!.location.lat;
-                    homeLong = result.geometry!.location.lng;
-                  });
-                  Navigator.of(context).pop();
-                  // distnce();
-                },
-                initialPosition: LatLng(currentLocation!.latitude, currentLocation!.longitude),
-                // useCurrentLocation: true,
+    return InkWell(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PlacePicker(
+              apiKey: Platform.isAndroid
+                  ? "AIzaSyDPsdTq-a4AHYHSNvQsdAlZgWvRu11T9pM"
+                  : "AIzaSyDPsdTq-a4AHYHSNvQsdAlZgWvRu11T9pM",
+              onPlacePicked: (result) {
+                print(result.formattedAddress);
+                setState(() {
+                  _currentAddress = result.formattedAddress.toString();
+                  homelat = result.geometry!.location.lat;
+                  homeLong = result.geometry!.location.lng;
+                });
+                Navigator.of(context).pop();
+                // distnce();
+              },
+              initialPosition: LatLng(currentLocation!.latitude, currentLocation!.longitude),
+              // useCurrentLocation: true,
+            ),
+          ),
+        );
+        //showPlacePicker();
+      },
+      child: Row(
+        children: [
+          Icon(Icons.location_on_outlined,color: colors.primary,),
+          Container(
+            width: 150,
+            child: Text(
+
+              _currentAddress != null
+                  ? _currentAddress!
+                  : "please wait..",overflow: TextOverflow.ellipsis, textAlign: TextAlign.center,maxLines: 1,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: colors.blackTemp,
+                  fontSize: 15, overflow: TextOverflow.ellipsis
               ),
             ),
-          );
-          //showPlacePicker();
-        },
-        child: Text(
-          _currentAddress != null
-              ? _currentAddress!
-              : "please wait..",overflow: TextOverflow.ellipsis, textAlign: TextAlign.center,
-          style: const TextStyle(
-              fontWeight: FontWeight.w500,
-              color: colors.blackTemp,
-              fontSize: 15, overflow: TextOverflow.ellipsis
           ),
-        ),
-      ),
+        ],
+       )
     );
   }
   // void showPlacePicker() async {
@@ -404,7 +410,7 @@ class _DashboardPageState extends State<Dashboard>
       actions: <Widget>[
         Padding(
           padding: const EdgeInsetsDirectional.only(
-            end: 10.0,
+            end: 0.0,
             bottom: 10.0,
             top: 10.0,
           ),
@@ -442,7 +448,7 @@ class _DashboardPageState extends State<Dashboard>
 
         Padding(
           padding: const EdgeInsetsDirectional.only(
-              end: 10.0, bottom: 10.0, top: 10.0),
+              end: 0.0, bottom: 10.0, top: 10.0),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(circularBorderRadius10),
@@ -464,7 +470,7 @@ class _DashboardPageState extends State<Dashboard>
         ),
         Padding(
           padding: const EdgeInsetsDirectional.only(
-            end: 10.0,
+            end: 0.0,
             bottom: 10.0,
             top: 10.0,
           ),
@@ -531,7 +537,7 @@ class _DashboardPageState extends State<Dashboard>
                         height: 25,)
                     : SvgPicture.asset(
                         DesignConfiguration.setSvgPath(disabledImage),
-                        color: Color(0xff23C0A9),
+                        color: colors.ekstraColor,
                         height: 20,
                       ),
               ),
