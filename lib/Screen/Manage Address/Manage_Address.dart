@@ -137,7 +137,7 @@ class StateAddress extends State<ManageAddress> with TickerProviderStateMixin {
       appBar:
           getSimpleAppBar(getTranslated(context, 'SHIPP_ADDRESS')!, context),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: colors.primary,
+        backgroundColor: colors.secondary,
         onPressed: () async {
           await Navigator.push(
             context,

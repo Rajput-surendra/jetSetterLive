@@ -195,7 +195,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                   gradient: const LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [colors.grad1Color, colors.grad2Color],
+                    colors: [colors.primary, colors.primary],
                     stops: [0, 1],
                   ),
                   borderRadius: BorderRadius.circular(circularBorderRadius10),

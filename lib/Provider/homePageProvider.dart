@@ -12,6 +12,7 @@ import '../Helper/String.dart';
 import '../Helper/routes.dart';
 import '../Model/Model.dart';
 import '../Model/Section_Model.dart';
+import '../Screen/Dashboard/Dashboard.dart';
 import '../widgets/networkAvailablity.dart';
 import '../widgets/snackbar.dart';
 import 'CategoryProvider.dart';
@@ -115,14 +116,49 @@ class HomePageProvider extends ChangeNotifier {
 
   //
   //This method is used to get Slider images from server
+  // Future<void> getSliderImages() async {
+  //   print('&&&&&&&&Sliderrrrrrr${homeSliderList}');
+  //
+  //   sliderLoading = true;
+  //   notifyListeners();
+  //   homeSliderList.clear();
+  //
+  //   await HomeRepository.fetchSliderImages(parameter: {
+  //
+  //   }).then(
+  //
+  //     (result) {
+  //
+  //       if (!result['error']) {
+  //         List<Model> tempList = [];
+  //
+  //         for (var element in (result['sliderList'] as List)) {
+  //           tempList.add(element);
+  //         }
+  //
+  //         homeSliderList.addAll(tempList);
+  //
+  //         sliderLoading = false;
+  //         notifyListeners();
+  //       }
+  //     },
+  //   );
+  // }
+
+
   Future<void> getSliderImages() async {
-    print('&&&&&&&&Sliderrrrrrr${homeSliderList}');
+
     sliderLoading = true;
     notifyListeners();
     homeSliderList.clear();
 
-    await HomeRepository.fetchSliderImages().then(
-      (result) {
+
+    notifyListeners();
+    var parameter = {CITY_NAME: "${cityName}",};
+    print('____this is a parameter______${parameter}_________');
+    await HomeRepository.fetchSliderImages(parameter: parameter).then(
+          (result) {
+
         if (!result['error']) {
           List<Model> tempList = [];
 
@@ -138,7 +174,6 @@ class HomePageProvider extends ChangeNotifier {
       },
     );
   }
-
   //This method is used to get Categories from server
   Future<void> getCategories(
     BuildContext context,

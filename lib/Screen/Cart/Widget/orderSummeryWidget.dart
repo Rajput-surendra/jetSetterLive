@@ -1,4 +1,5 @@
 import 'package:eshop_multivendor/Helper/Color.dart';
+import 'package:eshop_multivendor/Screen/Cart/Cart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../Model/Section_Model.dart';
@@ -8,10 +9,12 @@ import '../../Language/languageSettings.dart';
 
 class OrderSummery extends StatelessWidget {
   List<SectionModel> cartList;
-  OrderSummery({Key? key, required this.cartList}) : super(key: key);
+
+  OrderSummery({Key? key, required this.cartList,this.selectedNumber,this.amt}) : super(key: key);
+  var selectedNumber,amt;
   @override
   Widget build(BuildContext context) {
-    print('___________${context.read<CartProvider>().deliveryCharge}_jkljjljl_________');
+
     return Card(
       elevation: 1,
       child: Padding(
@@ -65,9 +68,58 @@ class OrderSummery extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontFamily: 'ubuntu',
                   ),
-                )
+                ),
+
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Tip your delivery partner",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.lightBlack2,
+                    fontFamily: 'ubuntu',
+                  ),
+                ),
+                selectedNumber ==  null ?  Text(
+                  '₹ 0.0 ',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.fontColor,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'ubuntu',
+                  ),
+                ):Text(
+                  '₹ ${selectedNumber.toString()} ',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.fontColor,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'ubuntu',
+                  ),
+                )
+
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Donate Food",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.lightBlack2,
+                    fontFamily: 'ubuntu',
+                  ),
+                ),
+                Text(
+                  '₹ ${amt} ',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.fontColor,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'ubuntu',
+                  ),
+                ),
+
+              ],
+            ),
+
             context.read<CartProvider>().isPromoValid!
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

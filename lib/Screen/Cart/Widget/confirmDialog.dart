@@ -8,7 +8,10 @@ import '../../../widgets/desing.dart';
 import '../../Language/languageSettings.dart';
 
 class GetContent extends StatelessWidget {
-   GetContent({Key? key,}) : super(key: key);
+  double? allTotalPrice,finalTotalAmount;
+    int? selectedNumber;
+    double? amt;
+   GetContent({Key? key,this.allTotalPrice,this.finalTotalAmount,this.selectedNumber,this.amt}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +83,58 @@ class GetContent extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontFamily: 'ubuntu',
                         ),
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Tip your delivery partner",
+                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                      color: Theme.of(context).colorScheme.lightBlack2,
+                      fontFamily: 'ubuntu',
+                    ),
+                  ),
+                  selectedNumber  == null ?  Text(
+                    "₹ 0.0",
+                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                      color: Theme.of(context).colorScheme.fontColor,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'ubuntu',
+                    ),
+                  ):Text(
+                    "₹ ${selectedNumber}",
+                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                      color: Theme.of(context).colorScheme.fontColor,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'ubuntu',
+                    ),
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Donate Food",
+                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                      color: Theme.of(context).colorScheme.lightBlack2,
+                      fontFamily: 'ubuntu',
+                    ),
+                  ),
+                  amt  == null ?  Text(
+                    "₹ 0.0",
+                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                      color: Theme.of(context).colorScheme.fontColor,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'ubuntu',
+                    ),
+                  ):Text(
+                    "₹ ${amt}",
+                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                      color: Theme.of(context).colorScheme.fontColor,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'ubuntu',
+                    ),
                   )
                 ],
               ),
@@ -155,14 +210,63 @@ class GetContent extends StatelessWidget {
                             fontFamily: 'ubuntu',
                           ),
                     ),
-                    Text(
-                      '${DesignConfiguration.getPriceFormat(context, context.read<CartProvider>().oriPrice)!} ',
+                    // allTotalPrice ==0.0 ? Text(
+                    //   '${context.read<CartProvider>().totalPrice.toStringAsFixed(2)} ',
+                    //   style: TextStyle(
+                    //     color: Theme.of(context)
+                    //         .colorScheme
+                    //         .fontColor,
+                    //     fontWeight: FontWeight.bold,
+                    //     fontFamily: 'ubuntu',
+                    //   ),
+                    // ):
+                    finalTotalAmount != 0.0
+                        ? Text(
+                      '${finalTotalAmount} ',
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.fontColor,
-                        fontWeight: FontWeight.bold,
+                        color: Theme.of(
+                            context)
+                            .colorScheme
+                            .fontColor,
+                        fontWeight:
+                        FontWeight.bold,
+                        fontFamily:
+                        'ubuntu',
+                      ),
+                    )
+                    //         :   allTotalPrice != 0.0
+                    //     ? Text(
+                    //   '${allTotalPrice} ',
+                    //   style: TextStyle(
+                    //     color: Theme.of(
+                    //         context)
+                    //         .colorScheme
+                    //         .fontColor,
+                    //     fontWeight:
+                    //     FontWeight.bold,
+                    //     fontFamily:
+                    //     'ubuntu',
+                    //   ),
+                    // )
+                        :  Text(
+                      '${context.read<CartProvider>().totalPrice} ',
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .fontColor,
+                        fontWeight:
+                        FontWeight.bold,
                         fontFamily: 'ubuntu',
                       ),
                     ),
+                    // Text(
+                    //   '${DesignConfiguration.getPriceFormat(context, context.read<CartProvider>().oriPrice)!} ',
+                    //   style: TextStyle(
+                    //     color: Theme.of(context).colorScheme.fontColor,
+                    //     fontWeight: FontWeight.bold,
+                    //     fontFamily: 'ubuntu',
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

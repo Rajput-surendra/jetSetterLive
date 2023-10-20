@@ -39,6 +39,7 @@ import '../Notification/NotificationLIst.dart';
 import '../homePage/homepageNew.dart';
 var homelat;
 var homeLong;
+String? cityName;
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
 
@@ -260,6 +261,7 @@ class _DashboardPageState extends State<Dashboard>
             currentLocation = position;
             homelat = currentLocation?.latitude;
             homeLong = currentLocation?.longitude;
+
             print('_____homeLong______${homelat}______${homeLong}____');
           });
       });
@@ -276,13 +278,28 @@ class _DashboardPageState extends State<Dashboard>
         Placemark place = p[0];
         setState(() {
           _currentAddress = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.country}";
-
-          print("current addresssss nowwwww${_currentAddress}");
+           cityName = "${place.locality}";
+          print("-------------------?${cityName}");
         });
       } catch (e) {
         print('errorrrrrrr ${e}');
       }
     });
+  }
+
+  getCityFromLatLng(double homelat, double homelong) async {
+    try {
+      print("Addressss function");
+      List<Placemark> p = await placemarkFromCoordinates(homelat, homelong);
+      Placemark place = p[0];
+      setState(() {
+        _currentAddress = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.country}";
+        cityName = "${place.locality}";
+        print("-------------------?${cityName}");
+      });
+    } catch (e) {
+      print('errorrrrrrr ${e}');
+    }
   }
   setSnackBarFunctionForCartMessage() {
     Future.delayed(const Duration(seconds: 5)).then(
@@ -312,8 +329,13 @@ class _DashboardPageState extends State<Dashboard>
                 setState(() {
                   _currentAddress = result.formattedAddress.toString();
                   homelat = result.geometry!.location.lat;
-                  homeLong = result.geometry!.location.lng;
+                  homelat = result.geometry!.location.lng;
+
+
+
+
                 });
+              getCityFromLatLng(result.geometry!.location.lat, result.geometry!.location.lng);
                 Navigator.of(context).pop();
                 // distnce();
               },
@@ -330,7 +352,6 @@ class _DashboardPageState extends State<Dashboard>
           Container(
             width: 150,
             child: Text(
-
               _currentAddress != null
                   ? _currentAddress!
                   : "please wait..",overflow: TextOverflow.ellipsis, textAlign: TextAlign.center,maxLines: 1,
@@ -374,25 +395,28 @@ class _DashboardPageState extends State<Dashboard>
           ?getCurrentLocationCard()
           : InkWell(
         onTap: (){
+          print('_____ddddddddddddd_____${_currentAddress}_________');
           //showPlacePicker();
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => PlacePicker(
                 apiKey: Platform.isAndroid
-                    ? "AIzaSyDPsdTq-a4AHYHSNvQsdAlZgWvRu11T9pM"
-                    : "AIzaSyDPsdTq-a4AHYHSNvQsdAlZgWvRu11T9pM",
+                    ? "AIzaSyAXL1tpx0xZORmWdCkqaStqHC4BhklFZ78"
+                    : "AIzaSyAXL1tpx0xZORmWdCkqaStqHC4BhklFZ78",
                 onPlacePicked: (result) {
-                  print(result.formattedAddress);
+                  print("111111111111111111111${result.formattedAddress}");
                   setState(() {
                     _currentAddress = result.formattedAddress.toString();
                     homelat = result.geometry!.location.lat;
                     homeLong = result.geometry!.location.lng;
+
                   });
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(result.geometry!.location);
+                  print('_____dssdsdf_____${result.geometry!.location}_________');
                   // distnce();
                 },
-                initialPosition: LatLng(currentLocation!.latitude, currentLocation!.longitude),
+                initialPosition: LatLng(currentLocation!.latitude, currentLocation!.longitude,),
                // useCurrentLocation: true,
               ),
             ),

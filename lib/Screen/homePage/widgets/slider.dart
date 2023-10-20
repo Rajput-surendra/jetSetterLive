@@ -126,10 +126,11 @@ class _CustomSliderState extends State<CustomSlider> {
     return GestureDetector(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(circularBorderRadius1),
-        child: CachedNetworkImage(
+        child:
+        CachedNetworkImage(
           imageUrl: slider.image!,
           placeholder: (context, url) {
-            return Image.asset('assets/images/bannarlogo.png');
+            return Center(child: CircularProgressIndicator(color: colors.primary,));
           },
       //       SvgPicture.asset(
       //   DesignConfiguration.setSvgPath('sliderph'),
@@ -138,7 +139,8 @@ class _CustomSliderState extends State<CustomSlider> {
       //   color: colors.primary,
       // );
           errorWidget: (context, error, stackTrace) {
-            return Image.asset('assets/images/bannarlogo.png');
+            return Center(child: CircularProgressIndicator(color: colors.primary,));
+            // Image.asset('assets/images/bannarlogo.png');
             //   SvgPicture.asset(
             //   DesignConfiguration.setSvgPath('sliderph'),
             //   fit: BoxFit.fill,
@@ -232,7 +234,7 @@ class _CustomSliderState extends State<CustomSlider> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(circularBorderRadius5),
                     color: curSliderIndex == index
-                        ? Theme.of(context).colorScheme.primary
+                        ? /*Theme.of(context).colorScheme.primary*/ colors.primary
                         : Theme.of(context).colorScheme.white,
                   ),
                 );

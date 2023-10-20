@@ -7,24 +7,41 @@ import '../Model/Model.dart';
 import '../Model/Section_Model.dart';
 
 class HomeRepository {
-  //This method is used to fetch slider images
-  static Future<Map<String, dynamic>> fetchSliderImages() async {
+  // This method is used to fetch slider images
+  // static Future<Map<String, dynamic>> fetchSliderImages() async {
+  //   try {
+  //     print('____getSliderApi______${getSliderApi}_________');
+  //     var sliderData = await ApiBaseHelper().postAPICall(getSliderApi, para);
+  //
+  //     return {
+  //       'error': sliderData['error'],
+  //       'message': sliderData['message'],
+  //       'sliderList': (sliderData['data'] as List)
+  //           .map((data) => Model.fromSlider(data))
+  //           .toList()
+  //     };
+  //   } catch (e) {
+  //     throw ApiException('$errorMesaage${e.toString()}');
+  //   }
+  // }
+  static Future<Map<String, dynamic>> fetchSliderImages(
+      {required Map<String, dynamic> parameter}) async {
     try {
-      print('____getSliderApi______${getSliderApi}_________');
-      var sliderData = await ApiBaseHelper().postAPICall(getSliderApi, {});
+      print('_____Kya huaa_____${parameter}_________');
+      var sliderData =
+      await ApiBaseHelper().postAPICall(getSliderApi, parameter);
 
       return {
         'error': sliderData['error'],
-        'message': sliderData['message'],
-        'sliderList': (sliderData['data'] as List)
-            .map((data) => Model.fromSlider(data))
-            .toList()
-      };
+    'message': sliderData['message'],
+    'sliderList': (sliderData['data'] as List)
+        .map((data) => Model.fromSlider(data))
+        .toList()
+    };
     } catch (e) {
       throw ApiException('$errorMesaage${e.toString()}');
     }
   }
-
   //
   //This method is used to fetch categories
   static Future<Map<String, dynamic>> fetchCategories(
@@ -48,7 +65,7 @@ class HomeRepository {
       {required Map<String, dynamic> parameter}) async {
 
     try {
-       print('-----This is parameter-------${parameter}');
+       print('-----fetchSections-------${parameter}');
       var sectionData =
           await ApiBaseHelper().postAPICall(getSectionApi, parameter);
                       //    ;

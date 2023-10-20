@@ -462,7 +462,7 @@ class _AddMoneyDialogState extends State<AddMoneyDialog> {
                               getTranslated(context, 'payWarning')!,
                               style:
                                   Theme.of(context).textTheme.caption!.copyWith(
-                                        color: Colors.red,
+                                        color: colors.primary,
                                         fontFamily: 'ubuntu',
                                       ),
                             ),

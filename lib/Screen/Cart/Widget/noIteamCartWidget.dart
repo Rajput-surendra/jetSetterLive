@@ -9,14 +9,14 @@ class EmptyCart extends StatelessWidget {
   const EmptyCart({Key? key}) : super(key: key);
 
   noCartImage(BuildContext context) {
-    return Image.asset('assets/images/png/cartEmpty_image.png',height:350,width:350,);
+    return Image.asset('assets/images/png/cartEmpty_image.png',height:250,width:250,);
   }
 
   noCartText(BuildContext context) {
     return Text(
       getTranslated(context, 'NO_CART')!,
       style: Theme.of(context).textTheme.headline5!.copyWith(
-            color: colors.primary,
+            color: colors.blackTemp,
             fontWeight: FontWeight.normal,
             fontFamily: 'ubuntu',
           ),

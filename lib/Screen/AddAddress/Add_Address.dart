@@ -1045,15 +1045,7 @@ class StateAddress extends State<AddAddress> with TickerProviderStateMixin {
                             CupertinoPageRoute(
                               builder: (context) => Map(
                                 latitude:
-                                    context.read<AddressProvider>().latitude ==
-                                                null ||
-                                            context
-                                                    .read<AddressProvider>()
-                                                    .latitude ==
-                                                ''
-                                        ? position.latitude
-                                        : double.parse(context
-                                            .read<AddressProvider>()
+                                    context.read<AddressProvider>().latitude == null || context.read<AddressProvider>().latitude == '' ? position.latitude : double.parse(context.read<AddressProvider>()
                                             .latitude!),
                                 longitude:
                                     context.read<AddressProvider>().longitude ==

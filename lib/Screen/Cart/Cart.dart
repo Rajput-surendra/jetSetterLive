@@ -7,6 +7,7 @@ import 'package:eshop_multivendor/Model/delivery_charges_response.dart';
 import 'package:eshop_multivendor/Provider/CartProvider.dart';
 import 'package:eshop_multivendor/Provider/SettingProvider.dart';
 import 'package:eshop_multivendor/Provider/UserProvider.dart';
+import 'package:eshop_multivendor/Screen/Test/Widget/ListTile2.dart';
 import 'package:eshop_multivendor/repository/cartRepository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,10 @@ import 'Widget/paymentWidget.dart';
 import 'Widget/saveLaterIteamWidget.dart';
 import 'Widget/setAddress.dart';
 
+// double finalTotalAmount = 0.0;
+// double allTotalPrice = 0.0;
+// var selectedNumber;
+// int amt = 5;
 class Cart extends StatefulWidget {
   final bool fromBottom;
 
@@ -113,9 +118,16 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
         .prVarientList![selectedPos]
         .id!);
     context.read<CartProvider>().productIds.remove(context
-        .read<CartProvider>().saveLaterList[index].productList![0].prVarientList![selectedPos].id!);
-    context.read<CartProvider>().oriPrice = context.read<CartProvider>().oriPrice + total ;
-    context.read<CartProvider>().addCartItem(context.read<CartProvider>().saveLaterList[index]);
+        .read<CartProvider>()
+        .saveLaterList[index]
+        .productList![0]
+        .prVarientList![selectedPos]
+        .id!);
+    context.read<CartProvider>().oriPrice =
+        context.read<CartProvider>().oriPrice + total;
+    context
+        .read<CartProvider>()
+        .addCartItem(context.read<CartProvider>().saveLaterList[index]);
     context.read<CartProvider>().saveLaterList.removeAt(index);
 
     context.read<CartProvider>().addCart = false;
@@ -184,7 +196,6 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
       ),
     );
   }
-
 
   callApi() async {
     context.read<CartProvider>().setProgress(false);
@@ -306,16 +317,19 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
     deviceHeight = MediaQuery.of(context).size.height;
     deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar:  AppBar(
+      appBar: AppBar(
         centerTitle: true,
         elevation: 0,
         backgroundColor: colors.whiteTemp,
-        title: Text("Cart",style: TextStyle(color: colors.primary),),
+        title: Text(
+          "Cart",
+          style: TextStyle(color: colors.primary),
+        ),
       ),
 
-          // widget.fromBottom
-          // ? null
-          // : getSimpleAppBar(getTranslated(context, 'CART')!, context),
+      // widget.fromBottom
+      // ? null
+      // : getSimpleAppBar(getTranslated(context, 'CART')!, context),
       body: isNetworkAvail
           ? CUR_USERID != null
               ? Stack(
@@ -383,12 +397,13 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
     if (isNetworkAvail) {
       try {
         var parameter = {USER_ID: CUR_USERID, SAVE_LATER: save};
-        print('_____Surendra_____${getCartApi}______${parameter}___');
         apiBaseHelper.postAPICall(getCartApi, parameter).then((getdata) async {
           bool error = getdata['error'];
           String? msg = getdata['message'];
           if (!error) {
             var data = getdata['data'];
+            print(
+                '_____xczczxcxz_____${context.read<CartProvider>().oriPrice}_________');
 
             context.read<CartProvider>().oriPrice =
                 double.parse(getdata[SUB_TOTAL]);
@@ -396,9 +411,9 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
             context.read<CartProvider>().taxPer =
                 double.parse(getdata[TAX_PER]);
 
-            /*context.read<CartProvider>().totalPrice =
+            context.read<CartProvider>().totalPrice =
                 context.read<CartProvider>().deliveryCharge +
-                    context.read<CartProvider>().oriPrice;*/
+                    context.read<CartProvider>().oriPrice;
             // await getDeliveryCharge();
 
             List<SectionModel> cartList = (data as List)
@@ -419,7 +434,12 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                   .controller
                   .add(TextEditingController());
             }
-            setState(() {});
+            setState(() {
+              amt == null;
+              allTotalPrice == null;
+              selectedNumber == null;
+              finalTotalAmount == null;
+            });
           } else {
             if (msg != 'Cart Is Empty !') setSnackbar(msg!, _scaffoldKey);
           }
@@ -1139,14 +1159,15 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                           if (context.read<CartProvider>().oriPrice > 0) {
                             FocusScope.of(context).unfocus();
                             if (isAvailable) {
-                              getPhonpayURL();
-                              if (context.read<CartProvider>().oriPrice !=
-                                  0) {
-                                // await getDeliveryCharge();
-                                checkout();
-
-
-                              }
+                              checkout();
+                              // getPhonpayURL();
+                              //  if (context.read<CartProvider>().oriPrice !=
+                              //      0) {
+                              //    // await getDeliveryCharge();
+                              //    checkout();
+                              //
+                              //
+                              //  }
                             } else {
                               setSnackbar(
                                   getTranslated(
@@ -1251,13 +1272,18 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                 ),
               );
   }
-  final List<String> amount = ['10', '30', '50',];
-  List<String> onSelectedAmount = [];
-  var selectedAmount;
+
+  // final List<String> amount = ['5'];
+  // List<String> onSelectedAmount = [];
+  // var selectedAmount;
   double allTotalPrice = 0.0;
+  double amt = 0;
+  double finalTotalAmount = 0.0;
   List<int> numbers = [10, 30, 50];
   var selectedNumber;
-
+  // List<int> Donatenumbers = [5,];
+  // var selectedDonete;
+  bool isChecked = false;
   checkout() {
     deviceHeight = MediaQuery.of(context).size.height;
     deviceWidth = MediaQuery.of(context).size.width;
@@ -1320,106 +1346,312 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                                     .cartList),
 
                                                 Card(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text("Tip your delivery partner",style: TextStyle(color: colors.blackTemp,fontSize: 15,fontWeight: FontWeight.bold),),
-                                                        SizedBox(height: 3,),
-                                                        Text("Your kindness means a lot! 100% of your tip will go directly to them",style: TextStyle(color: colors.black54,fontSize: 11,fontWeight: FontWeight.bold),),
-                                                        SizedBox(height: 3,),
-                                                        Container(
-                                                          height: 50,
-                                                          width: MediaQuery.of(context).size.width/1.1,
-                                                          child: ListView.builder(
-                                                            shrinkWrap: true,
-                                                            scrollDirection: Axis.horizontal,
-                                                            itemCount: numbers.length,
-                                                            itemBuilder: (context, index) {
-                                                              return InkWell(
-                                                                onTap: () {
-                                                                  setState(() {
-                                                                    selectedNumber = numbers[index];
-                                                                  });
-                                                                  allTotalPrice =  context.read<CartProvider>().oriPrice + int.parse(selectedNumber.toString());
-                                                                  print('____allTotalPrice______${allTotalPrice}_________');
-                                                                },
-                                                                child: Card(
-                                                                  shape: RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(10.0),
-                                                                  ),
-                                                                  elevation: 2,
-                                                                  child: Container(
-                                                                    decoration: BoxDecoration(
-                                                                      borderRadius: BorderRadius.circular(10),
-                                                                      color:selectedNumber == numbers[index]
-                                                                          ? colors.primary // Change the color when selected
-                                                                          : colors.whiteTemp.withOpacity(0.4),
-                                                                    ),
-                                                                    height: 50,
-                                                                    width: 70,
+                                                    child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "Tip your delivery partner",
+                                                        style: TextStyle(
+                                                            color: colors
+                                                                .blackTemp,
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 3,
+                                                      ),
+                                                      Text(
+                                                        "Your kindness means a lot! 100% of your tip will go directly to them",
+                                                        style: TextStyle(
+                                                            color:
+                                                                colors.black54,
+                                                            fontSize: 11,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 3,
+                                                      ),
+                                                      Container(
+                                                        height: 50,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            1.1,
+                                                        child: ListView.builder(
+                                                          shrinkWrap: true,
+                                                          scrollDirection:
+                                                              Axis.horizontal,
+                                                          itemCount:
+                                                              numbers.length,
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            return InkWell(
+                                                              onTap: () {
+                                                                setState(() {
+                                                                  selectedNumber =
+                                                                      numbers[
+                                                                          index];
+                                                                  finalTotalAmount = context
+                                                                          .read<
+                                                                              CartProvider>()
+                                                                          .totalPrice +
+                                                                      int.parse(
+                                                                          selectedNumber
+                                                                              .toString());
+                                                                  isChecked =
+                                                                      false;
+                                                                });
 
-                                                                    child: Center(child: Text('₹${numbers[index]}',style: TextStyle(color:selectedNumber == numbers[index] ? colors.whiteTemp:colors.blackTemp,fontSize: 18),)),
-
-                                                                  ),
+                                                                // print('____allTotalPrice______${allTotalPrice}_________');
+                                                              },
+                                                              child: Card(
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10.0),
                                                                 ),
-                                                              );
-                                                            },
-                                                          ),
+                                                                elevation: 2,
+                                                                child:
+                                                                    Container(
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            10),
+                                                                    color: selectedNumber ==
+                                                                            numbers[
+                                                                                index]
+                                                                        ? colors
+                                                                            .primary // Change the color when selected
+                                                                        : colors
+                                                                            .whiteTemp
+                                                                            .withOpacity(0.4),
+                                                                  ),
+                                                                  height: 50,
+                                                                  width: 70,
+                                                                  child: Center(
+                                                                      child:
+                                                                          Text(
+                                                                    '₹${numbers[index]}',
+                                                                    style: TextStyle(
+                                                                        color: selectedNumber == numbers[index]
+                                                                            ? colors
+                                                                                .whiteTemp
+                                                                            : colors
+                                                                                .blackTemp,
+                                                                        fontSize:
+                                                                            18),
+                                                                  )),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
                                                         ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )),
+                                                // Card(
+                                                //     child: Padding(
+                                                //       padding: const EdgeInsets.all(8.0),
+                                                //       child: Column(
+                                                //         crossAxisAlignment: CrossAxisAlignment.start,
+                                                //         children: [
+                                                //           Text("Donate Food",style: TextStyle(color: colors.blackTemp,fontSize: 15,fontWeight: FontWeight.bold),),
+                                                //
+                                                //           SizedBox(height: 3,),
+                                                //           Container(
+                                                //             height: 50,
+                                                //             width: MediaQuery.of(context).size.width/1.1,
+                                                //             child: ListView.builder(
+                                                //               shrinkWrap: true,
+                                                //               scrollDirection: Axis.horizontal,
+                                                //               itemCount: Donatenumbers.length,
+                                                //               itemBuilder: (context, index) {
+                                                //                 return InkWell(
+                                                //                   onTap: () {
+                                                //                     setState(() {
+                                                //                       selectedDonete = Donatenumbers[index];
+                                                //                     });
+                                                //                    // allTotalPrice =  context.read<CartProvider>().oriPrice + int.parse(selectedNumber.toString());
+                                                //                     print('____allTotalPrice______${allTotalPrice}_________');
+                                                //                   },
+                                                //                   child: Card(
+                                                //                     shape: RoundedRectangleBorder(
+                                                //                       borderRadius: BorderRadius.circular(10.0),
+                                                //                     ),
+                                                //                     elevation: 2,
+                                                //                     child: Container(
+                                                //                       decoration: BoxDecoration(
+                                                //                         borderRadius: BorderRadius.circular(10),
+                                                //                         color:selectedDonete == Donatenumbers[index]
+                                                //                             ? colors.primary // Change the color when selected
+                                                //                             : colors.whiteTemp.withOpacity(0.4),
+                                                //                       ),
+                                                //                       height: 50,
+                                                //                       width: 70,
+                                                //
+                                                //                       child: Center(child: Text('₹${Donatenumbers[index]}',style: TextStyle(color:selectedDonete == Donatenumbers[index] ? colors.whiteTemp:colors.blackTemp,fontSize: 18),)),
+                                                //
+                                                //                     ),
+                                                //                   ),
+                                                //                 );
+                                                //               },
+                                                //             ),
+                                                //           ),
+                                                //         ],
+                                                //       ),
+                                                //     )
+                                                // ),
+
                                                 // Card(
                                                 //   child: Padding(
                                                 //     padding: const EdgeInsets.all(8.0),
-                                                //     child: Container(
-                                                //       height: 50,
-                                                //       width: MediaQuery.of(context).size.width/1.1,
-                                                //       child: ListView.builder(
-                                                //         shrinkWrap: true,
-                                                //         scrollDirection: Axis.horizontal,
-                                                //         itemCount: amount.length ?? 0,
-                                                //         itemBuilder: (BuildContext context, int index) {
-                                                //           return InkWell(
-                                                //             onTap: () {
-                                                //               if(onSelectedAmount.contains(amount[index])){
-                                                //                 onSelectedAmount.remove(amount[index]);
-                                                //                 selectedAmount = onSelectedAmount.join(",");
-                                                //                 //print("selectedd ${onSelectedWeek}");
-                                                //               } else{
-                                                //                 onSelectedAmount.add(amount[index]);
-                                                //                 selectedAmount = onSelectedAmount.join(",");
-                                                //                 print("selectedd@@@@@ ${onSelectedAmount}");
-                                                //               }
-                                                //               setState(() {
+                                                //     child: Column(
+                                                //       crossAxisAlignment: CrossAxisAlignment.start,
+                                                //       children: [
+                                                //         Text("Donate Food - Donate to children in need (5 rs)",style: TextStyle(color: colors.blackTemp,fontSize: 15,fontWeight: FontWeight.bold),),
+                                                //         Container(
+                                                //           height: 50,
+                                                //           width: MediaQuery.of(context).size.width/1.1,
+                                                //           child: ListView.builder(
+                                                //             shrinkWrap: true,
+                                                //             scrollDirection: Axis.horizontal,
+                                                //             itemCount: amount.length ?? 0,
+                                                //             itemBuilder: (BuildContext context, int index) {
+                                                //               return InkWell(
+                                                //                   onTap: () {
+                                                //                     if(onSelectedAmount.contains(amount[index])){
+                                                //                       onSelectedAmount.remove(amount[index]);
+                                                //                       selectedAmount = onSelectedAmount.join(",");
+                                                //                       //print("selectedd ${onSelectedWeek}");
+                                                //                     } else{
+                                                //                       onSelectedAmount.add(amount[index]);
+                                                //                       selectedAmount = onSelectedAmount.join(",");
+                                                //                       print("selectedd@@@@@ ${onSelectedAmount}");
+                                                //                     }
+                                                //                     setState(() {
+                                                //                       finalTotalAmount =  allTotalPrice +  int.parse(selectedAmount);
+                                                //                     });
                                                 //
-                                                //
-                                                //               });
-                                                //               allTotalPrice =  context.read<CartProvider>().oriPrice + double.parse(selectedAmount);
-                                                //               print('____dsadas______${allTotalPrice}_________');
+                                                //                     // allTotalPrice =  context.read<CartProvider>().oriPrice + double.parse(selectedAmount);
+                                                //                     print('____dsadas______${finalTotalAmount}_________');
+                                                //                   },
+                                                //                   child: SizedBox(
+                                                //                     height: 20,
+                                                //                     width: 80,
+                                                //                     child: Card(
+                                                //                       shape: RoundedRectangleBorder(
+                                                //                           borderRadius: BorderRadius.circular(10)
+                                                //                       ),
+                                                //                       elevation: 2,
+                                                //                       color: onSelectedAmount.contains(amount[index]) ? colors.primary:colors.whiteTemp,
+                                                //                       child: Center(child: Text("₹${amount[index]}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15,color: onSelectedAmount.contains(amount[index]) ? colors.whiteTemp:colors.blackTemp),),
+                                                //                       ),
+                                                //                     ),
+                                                //                   )
+                                                //               );
+                                                //               //   ListTile(
+                                                //               //   title:
+                                                //               // );
                                                 //             },
-                                                //             child: SizedBox(
-                                                //               height: 20,
-                                                //               width: 90,
-                                                //               child: Card(
-                                                //                 color: onSelectedAmount.contains(amount[index]) ? colors.primary:Colors.white70,
-                                                //                 child: Center(child: Text(amount[index],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15,color: onSelectedAmount.contains(amount[index]) ? colors.whiteTemp:colors.blackTemp),),
-                                                //                 ),
-                                                //               ),
-                                                //             ),
-                                                //           );
-                                                //           //   ListTile(
-                                                //           //   title:
-                                                //           // );
-                                                //         },
-                                                //       ),
-                                                //     ),
+                                                //           ),
+                                                //         ),
+                                                //       ],
+                                                //     )
+                                                //
+                                                //
                                                 //   ),
                                                 // ),
+
+                                                Card(
+                                                    child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Text(
+                                                        "Donate Food - Donate to children in need (5 rs)",
+                                                        style: TextStyle(
+                                                            color: colors
+                                                                .blackTemp,
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                    CheckboxListTile(
+                                                      title: Text("₹ 5"),
+                                                      value: isChecked,
+                                                      onChanged: (newValue) {
+
+                                                        setState(() {
+                                                          isChecked = newValue!;
+                                                          if (isChecked) {
+                                                            amt = 5;
+                                                            if(selectedNumber!= null){
+                                                              setState(() {
+                                                                finalTotalAmount =
+                                                                    finalTotalAmount +
+                                                                        amt;
+                                                              });
+                                                            }else{
+                                                              finalTotalAmount = context.read<CartProvider>().totalPrice +
+                                                                      amt;
+                                                            }
+
+                                                          } else {
+                                                            if(selectedNumber!= null){
+                                                              print('11111');
+                                                              setState(() {
+                                                                finalTotalAmount =
+                                                                    finalTotalAmount -
+                                                                        amt;
+                                                                amt = 0;
+                                                              });
+                                                            }else {
+                                                              print('_________yyyyyyyy_________');
+                                                              setState(() {
+                                                                finalTotalAmount =
+                                                                    finalTotalAmount -
+                                                                    // context
+                                                                    //     .read<
+                                                                    //     CartProvider>()
+                                                                    //     .totalPrice -
+                                                                        amt;
+                                                                amt = 0 ;
+                                                              });
+                                                            }
+                                                          }
+                                                        });
+                                                      },
+                                                      controlAffinity:
+                                                          ListTileControlAffinity
+                                                              .leading, //  <-- leading Checkbox
+                                                    ),
+                                                  ],
+                                                )),
+
                                                 OrderSummery(
+                                                  amt: amt,
+                                                  selectedNumber:
+                                                      selectedNumber,
                                                   cartList: context
                                                       .read<CartProvider>()
                                                       .cartList,
@@ -1440,7 +1672,6 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                       ],
                                     ),
                                   ),
-
                                   Container(
                                     color: Theme.of(context).colorScheme.white,
                                     child: Row(
@@ -1454,31 +1685,45 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                                 CrossAxisAlignment.start,
                                             children: [
 
-                                              allTotalPrice == null ?  Text(
-                                                '${DesignConfiguration.getPriceFormat(context, context.read<CartProvider>().oriPrice)!} ',
+                                              finalTotalAmount != 0.0
+                                                      ? Text(
+                                                          '${finalTotalAmount} ',
+                                                          style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .fontColor,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily:
+                                                                'ubuntu',
+                                                          ),
+                                                        )
+                                              //         :   allTotalPrice != 0.0
+                                              //     ? Text(
+                                              //   '${allTotalPrice} ',
+                                              //   style: TextStyle(
+                                              //     color: Theme.of(
+                                              //         context)
+                                              //         .colorScheme
+                                              //         .fontColor,
+                                              //     fontWeight:
+                                              //     FontWeight.bold,
+                                              //     fontFamily:
+                                              //     'ubuntu',
+                                              //   ),
+                                              // )
+                                            :  Text(
+                                                '${context.read<CartProvider>().totalPrice} ',
                                                 style: TextStyle(
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .fontColor,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: 'ubuntu',
-                                                ),
-                                              ):
-
-                                              Text(
-                                                // '${DesignConfiguration.getPriceFormat(context, context.read<CartProvider>().oriPrice)!} ',
-                                                '${allTotalPrice} ',
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .fontColor,
-                                                  fontWeight: FontWeight.bold,
+                                                  fontWeight:
+                                                  FontWeight.bold,
                                                   fontFamily: 'ubuntu',
                                                 ),
                                               ),
-
-
-
                                               Text(
                                                 '${context.read<CartProvider>().cartList.length} Items',
                                                 style: const TextStyle(
@@ -1660,7 +1905,21 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                                 },
                                               );
                                             } else {
-                                             confirmDialog();
+                                              if (isAvailable) {
+                                                getPhonpayURL();
+                                                if (context
+                                                        .read<CartProvider>()
+                                                        .oriPrice !=
+                                                    0) {
+                                                  // await getDeliveryCharge();
+                                                  confirmDialog(
+                                                    allTotalPrice,
+                                                    finalTotalAmount,
+                                                    selectedNumber,
+                                                    amt,
+                                                  );
+                                                }
+                                              }
                                               context
                                                   .read<CartProvider>()
                                                   .checkoutState!(
@@ -1671,7 +1930,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                             }
                                           },
                                           child: Container(
-                                            margin: EdgeInsets.symmetric(
+                                            margin: const EdgeInsets.symmetric(
                                                 horizontal: 10, vertical: 10),
                                             height: 40,
                                             width: 120,
@@ -1679,7 +1938,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                                 color: colors.primary,
                                                 borderRadius:
                                                     BorderRadius.circular(10)),
-                                            child: Center(
+                                            child: const Center(
                                                 child: Text(
                                               "Place Order",
                                               style: TextStyle(
@@ -2185,15 +2444,22 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                 context.read<CartProvider>().deliveryCharge = 0;
               }
             }
-            context.read<CartProvider>().totalPrice = context.read<CartProvider>().totalPrice + context.read<CartProvider>().deliveryCharge  ;
+            context.read<CartProvider>().totalPrice =
+                context.read<CartProvider>().totalPrice +
+                    context.read<CartProvider>().deliveryCharge;
           } else {
             if (ISFLAT_DEL) {
-              if ((context.read<CartProvider>().oriPrice) < double.parse(MIN_AMT!)) {context.read<CartProvider>().deliveryCharge = double.parse(CUR_DEL_CHR!);
+              if ((context.read<CartProvider>().oriPrice) <
+                  double.parse(MIN_AMT!)) {
+                context.read<CartProvider>().deliveryCharge =
+                    double.parse(CUR_DEL_CHR!);
               } else {
                 context.read<CartProvider>().deliveryCharge = 0;
               }
             }
-            context.read<CartProvider>().totalPrice = context.read<CartProvider>().totalPrice + context.read<CartProvider>().deliveryCharge;
+            context.read<CartProvider>().totalPrice =
+                context.read<CartProvider>().totalPrice +
+                    context.read<CartProvider>().deliveryCharge;
           }
           if (mounted) {
             setState(
@@ -2271,35 +2537,35 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
   getPhonpayURL({int? i}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     mobile = preferences.getString("mobile");
-    print('___mobile_______${mobile}_________');
     var headers = {
       'Cookie':
           'ci_session=21a0cce4198ce39adcae5825f47e9ae7fb206970; ekart_security_cookie=66d94dbdccb45e35b890fe9e55cb162e'
     };
     var request = http.MultipartRequest(
-        'POST', Uri.parse('https://jetsetterindia.com/app/v1/api/initiate_phone_payment'));
+        'POST',
+        Uri.parse(
+            'https://jetsetterindia.com/app/v1/api/initiate_phone_payment'));
     request.fields.addAll({
       'user_id': CUR_USERID.toString(),
       'mobile': mobile.toString(),
-      'amount': '${context.read<CartProvider>().oriPrice}'
+      'amount': finalTotalAmount == 0.0 ? "${context.read<CartProvider>().oriPrice}" : finalTotalAmount.toString()
     });
-    print('_______request.fields____${request.fields}__________');
 
     request.headers.addAll(headers);
+
+    print('__________${request.fields}_________');
 
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       var result = await response.stream.bytesToString();
       var finalResult = jsonDecode(result);
-      print('_____zzzzzzz_____${finalResult}_________');
-      url = finalResult['data']['data']['instrumentResponse']['redirectInfo']['url'];
+
+      url = finalResult['data']['data']['instrumentResponse']['redirectInfo']
+          ['url'];
 
       merchantId = finalResult['data']['data']['merchantId'];
       merchantTransactionId =
           finalResult['data']['data']['merchantTransactionId'];
-  print('_____merchantTransactionId______${merchantTransactionId}_____${merchantId}_____');
-     print("aaaaaaaaaaaaaaaaaaaaaa${url}");
-
     } else {
       print(response.reasonPhrase);
     }
@@ -2308,15 +2574,13 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
   void initiatePayment() {
     // Replace this with the actual PhonePe payment URL you have
     String phonePePaymentUrl = url ?? '';
-    callBackUrl =
-        "https://jetsetterindia.com/app/home/phonepay_success";
+    callBackUrl = "https://jetsetterindia.com/app/home/phonepay_success";
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => Scaffold(
-          appBar: AppBar(
-            title: const Text('PhonePe Payment'),
-          ),
+          appBar: getSimpleAppBar(
+              getTranslated(context, 'PhonePe Payment')!, context),
           body: InAppWebView(
             initialUrlRequest: URLRequest(url: Uri.parse(phonePePaymentUrl)),
             onWebViewCreated: (controller) {
@@ -2330,7 +2594,6 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                 // Extract payment status from URL
                 /// String? paymentStatus = extractPaymentStatusFromUrl(url.toString());
                 ///
-
 
                 await _webViewController?.stopLoading();
 
@@ -2354,22 +2617,22 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
     );
   }
 
-
   getfat() async {
     var headers = {
       'Cookie': 'ci_session=fda639c7e3c8bd1817cf3d60effb9c425dfe81cb'
     };
-    var request = http.MultipartRequest('POST', Uri.parse('https://jetsetterindia.com/app/v1/api/check_phonepay_status'));
-    request.fields.addAll({
-      'transaction_id': merchantTransactionId.toString()
-    });
+    var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            'https://jetsetterindia.com/app/v1/api/check_phonepay_status'));
+    request.fields.addAll({'transaction_id': merchantTransactionId.toString()});
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       var result = await response.stream.bytesToString();
       var responseData = jsonDecode(result);
       var err = responseData['error'];
-      if(err == false) {
+      if (err == false) {
         String isError = responseData['data'][0]['error'];
 
         if (isError == 'true') {
@@ -2380,8 +2643,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
           isPhonePayPaymentSuccess = false;
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text('Payment Failure')));
-        }
-        else {
+        } else {
           placeOrder('');
           Navigator.pop(context);
           // isAdvancePaymentSuccess = false;
@@ -2395,20 +2657,17 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
               .showSnackBar(SnackBar(content: Text('Payment Success')));
         }
       } else {
-       // Navigator.pop(context);
+        // Navigator.pop(context);
       }
       print("11111111111${responseData}");
-
+    } else {
+      print(response.reasonPhrase);
     }
-    else {
-    print(response.reasonPhrase);
-    }
-
   }
-  void _handlePaymentStatus(String url) async {
-    await  getfat();
-    // Map<String, dynamic> responseData = await getfat();
 
+  void _handlePaymentStatus(String url) async {
+    await getfat();
+    // Map<String, dynamic> responseData = await getfat();
 
     // String isError = responseData['data'][0]['error'];
 
@@ -2440,8 +2699,8 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
   Future<Map<String, dynamic>> fetchDataFromUrl() async {
     print('__________eeeeeee_________');
     final response = await http.post(
-
-        Uri.parse("https://jetsetterindia.com/app/v1/api/check_phonepay_status"),
+        Uri.parse(
+            "https://jetsetterindia.com/app/v1/api/check_phonepay_status"),
         body: {"transaction_id": merchantTransactionId});
     if (response.statusCode == 200) {
       print('____fffffffff______${response.statusCode}_________');
@@ -2487,7 +2746,8 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
         var razorpayOrderID = response['data']['id'];
         var options = {
           KEY: context.read<CartProvider>().razorpayId,
-          AMOUNT: amt,
+          AMOUNT:
+              amt /*allTotalPrice == 0.0 ? amt : finalTotalAmount == 0.0 ? allTotalPrice :"",*/,
           NAME: settingsProvider.userName,
           'prefill': {CONTACT: contact, EMAIL: email, 'Order Id': orderID},
           'order_id': razorpayOrderID,
@@ -3409,7 +3669,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
     }
   }
 
-  void confirmDialog() {
+  void confirmDialog(double? allAmt, finalAmt, int? selectAmt, double? onlyAmt) {
     showGeneralDialog(
       barrierColor: Theme.of(context).colorScheme.black.withOpacity(0.5),
       transitionBuilder: (context, a1, a2, widget) {
@@ -3425,7 +3685,11 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                   Radius.circular(circularBorderRadius5),
                 ),
               ),
-              content:  GetContent(),
+              content: GetContent(
+                  allTotalPrice: allAmt,
+                  finalTotalAmount: finalAmt,
+                  selectedNumber: selectAmt,
+                  amt: onlyAmt),
               actions: <Widget>[
                 TextButton(
                   child: Text(
@@ -3595,7 +3859,8 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                   context.read<CartProvider>().deliverable = true;
                 },
               );
-              confirmDialog();
+              confirmDialog(
+                  allTotalPrice, finalTotalAmount, selectedNumber, amt);
             }
           },
           onError: (error) {

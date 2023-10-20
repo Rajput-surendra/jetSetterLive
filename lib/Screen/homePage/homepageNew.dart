@@ -123,6 +123,7 @@ class _HomePageState extends State<HomePage>
     _getAddressFromLatLng();
     getUserCurrentLocation();
     getSeller();
+    context.read<HomePageProvider>().getSliderImages();
 
     isSet =true;
 
@@ -241,7 +242,7 @@ class _HomePageState extends State<HomePage>
 
                            //   Text("Let's The World Together!"),
                               staticCArd(),
-                              getImagesModel?.data?.isEmpty ?? true ? SizedBox() :  imageCard(),
+                             getImagesModel?.data?.isEmpty ?? true ? SizedBox() :  imageCard(),
                               CustomSlider(),
                              // const Section(),
                              //  const SizedBox(height: 10,),

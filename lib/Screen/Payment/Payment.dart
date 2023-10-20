@@ -154,6 +154,8 @@ class StatePayment extends State<Payment> with TickerProviderStateMixin {
       key: _scaffoldKey,
       // appBar: getSimpleAppBar(getTranslated(context, 'PAYMENT_METHOD_LBL')!, context),
       appBar: AppBar(
+
+        backgroundColor: colors.primary,
         title: Text('${getTranslated(context, 'PAYMENT_METHOD_LBL')}',style: const TextStyle(
           color: colors.whiteTemp,
           fontWeight: FontWeight.normal,
@@ -660,9 +662,7 @@ class StatePayment extends State<Payment> with TickerProviderStateMixin {
         context,
         MaterialPageRoute(
           builder: (context) => Scaffold(
-            appBar: AppBar(
-              title: const Text('PhonePe Payment'),
-            ),
+            appBar: getSimpleAppBar(getTranslated(context, 'PhonePe Payment')!, context),
             body: InAppWebView(
               initialUrlRequest: URLRequest(url: Uri.parse(phonePePaymentUrl)),
               onWebViewCreated: (controller) {
