@@ -134,10 +134,11 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> senOtp() async {
+  Future<Map<String, dynamic>> senOtp(String? fId) async {
     try {
       var parameter = {
         MOBILE: mobilennumberPara,
+        'fcm_id': fId
       };
       var result =
       await AuthRepository.fetchOtpData(parameter: parameter);

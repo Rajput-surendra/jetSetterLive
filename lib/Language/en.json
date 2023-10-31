@@ -392,6 +392,7 @@
   "Create a new account": "Create a new account",
   "INFO_FOR_NEW_ACCOUNT": "Please put your information below to create a new account for using app.",
   "INFO_FOR_LOGIN": "Please enter your login details below to start using app.",
+  "INFO_FOR_LOGIN_TEXT": "Log in or sign up",
   "DeleteAcoountNow": "Delete Your Account",
   "DeleteAccount":"Delete Account",
   "DELETE_NOW":"Delete Now",

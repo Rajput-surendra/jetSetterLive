@@ -10,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../Helper/String.dart';
 import '../../widgets/desing.dart';
 import '../../widgets/systemChromeSettings.dart';
+import '../Auth/Login.dart';
 
 //splash screen of app
 class Splash extends StatefulWidget {
@@ -107,7 +108,7 @@ class _SplashScreen extends State<Splash> with TickerProviderStateMixin {
       Navigator.pushReplacement(
         context,
         CupertinoPageRoute(
-          builder: (context) => const IntroSlider(),
+          builder: (context) => const Login(),
         ),
       );
     }

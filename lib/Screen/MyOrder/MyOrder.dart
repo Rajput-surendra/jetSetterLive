@@ -168,48 +168,48 @@ class StateMyOrder extends State<MyOrder> with TickerProviderStateMixin {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            // Container(
-            //   padding:
-            //       const EdgeInsetsDirectional.only(start: 5.0, end: 5.0),
-            //   child: TextField(
-            //     controller: _controller,
-            //     style: TextStyle(
-            //       color: Theme.of(context).colorScheme.fontColor,
-            //     ),
-            //     decoration: InputDecoration(
-            //       filled: true,
-            //       isDense: true,
-            //       fillColor: Theme.of(context).colorScheme.white,
-            //       prefixIconConstraints: const BoxConstraints(
-            //         minWidth: 40,
-            //         maxHeight: 20,
-            //       ),
-            //       contentPadding: const EdgeInsets.symmetric(
-            //         horizontal: 10,
-            //         vertical: 10,
-            //       ),
-            //       prefixIcon: SvgPicture.asset(
-            //         DesignConfiguration.setSvgPath('search'),
-            //         color: colors.primary,
-            //       ),
-            //       hintText:
-            //           getTranslated(context, 'FIND_ORDER_ITEMS_LBL'),
-            //       hintStyle: TextStyle(
-            //         color: Theme.of(context)
-            //             .colorScheme
-            //             .fontColor
-            //             .withOpacity(0.3),
-            //         fontWeight: FontWeight.normal,
-            //       ),
-            //       border: const OutlineInputBorder(
-            //         borderSide: BorderSide(
-            //           width: 0,
-            //           style: BorderStyle.none,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            Container(
+              padding:
+                  const EdgeInsetsDirectional.only(start: 5.0, end: 5.0),
+              child: TextField(
+                controller: _controller,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.fontColor,
+                ),
+                decoration: InputDecoration(
+                  filled: true,
+                  isDense: true,
+                  fillColor: Theme.of(context).colorScheme.white,
+                  prefixIconConstraints: const BoxConstraints(
+                    minWidth: 40,
+                    maxHeight: 20,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 10,
+                  ),
+                  prefixIcon: SvgPicture.asset(
+                    DesignConfiguration.setSvgPath('search'),
+                    color: colors.primary,
+                  ),
+                  hintText:
+                      getTranslated(context, 'FIND_ORDER_ITEMS_LBL'),
+                  hintStyle: TextStyle(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .fontColor
+                        .withOpacity(0.3),
+                    fontWeight: FontWeight.normal,
+                  ),
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 0,
+                      style: BorderStyle.none,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Consumer<OrderProvider>(
               builder: (context, value, child) {
                 if (value.getCurrentStatus == OrderStatus.isSuccsess) {

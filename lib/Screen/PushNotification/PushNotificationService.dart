@@ -95,8 +95,7 @@ class PushNotificationService {
 
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
-        SettingProvider settingsProvider =
-            Provider.of<SettingProvider>(context, listen: false);
+        SettingProvider settingsProvider = Provider.of<SettingProvider>(context, listen: false);
         var data = message.notification!;
         var title = data.title.toString();
         var body = data.body.toString();
@@ -281,6 +280,7 @@ Future<void> generateImageNotication(
     'big text channel id',
     'big text channel name',
     channelDescription: 'big text channel description',
+    icon: '@mipmap/ic_launcher',
     largeIcon: FilePathAndroidBitmap(largeIconPath),
     styleInformation: bigPictureStyleInformation,
     playSound: true,
@@ -304,9 +304,10 @@ Future<void> generateSimpleNotication(
     'your channel name',
     channelDescription: 'your channel description',
     importance: Importance.max,
+    icon: '@mipmap/ic_launcher',
     priority: Priority.high,
     ticker: 'ticker',
-    playSound: true,
+    //playSound: true,
   );
   var iosDetail = const DarwinNotificationDetails();
 

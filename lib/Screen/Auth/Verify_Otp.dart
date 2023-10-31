@@ -1788,7 +1788,7 @@ class _MobileOTPState extends State<VerifyOtp> with TickerProviderStateMixin {
 
   Future <void> resendOTP() async{
     Future.delayed(Duration.zero).then(
-          (value) => context.read<AuthenticationProvider>().senOtp().then(
+          (value) => context.read<AuthenticationProvider>().senOtp("").then(
             (
             value,
             ) async {
@@ -1881,7 +1881,7 @@ class _MobileOTPState extends State<VerifyOtp> with TickerProviderStateMixin {
               monoVarifyText(),
               otpText(),
               mobText(),
-              otpTextVisible(),
+              //otpTextVisible(),
               otpLayout(),
               resendText(),
               verifyBtn(),

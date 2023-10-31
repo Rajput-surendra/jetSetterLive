@@ -5,6 +5,7 @@ import 'package:eshop_multivendor/Provider/Favourite/FavoriteProvider.dart';
 import 'package:eshop_multivendor/Provider/SettingProvider.dart';
 import 'package:eshop_multivendor/Provider/UserProvider.dart';
 import 'package:eshop_multivendor/Screen/Auth/SendOtp.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -61,6 +62,7 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 2000),
       vsync: this,
     );
+    getToken();
 
     buttonSqueezeanimation = Tween(
       begin: deviceWidth! * 0.7,
@@ -160,16 +162,14 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
     if (isNetworkAvail) {
      // sendOTP();
       Future.delayed(Duration.zero).then(
-            (value) => context.read<AuthenticationProvider>().senOtp().then(
+            (value) => context.read<AuthenticationProvider>().senOtp(fcmToken).then(
               (
               value,
               ) async {
             bool? error = value['error'];
-            print('____surendra______${value['error']}_________');
             String? msg = value['message'];
             int? receivedOTP = value['otp'];
             String? mobile = value['mobile'];
-            print('____ssssss______${mobile}_________');
             await buttonController!.reverse();
             SettingProvider settingsProvider =
             Provider.of<SettingProvider>(context, listen: false);
@@ -699,7 +699,7 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
         top: 13.0,
       ),
       child: Text(
-        getTranslated(context, 'INFO_FOR_LOGIN')!,
+        getTranslated(context, 'INFO_FOR_LOGIN_TEXT')!,
         style: Theme.of(context).textTheme.subtitle2!.copyWith(
               color: Theme.of(context).colorScheme.fontColor.withOpacity(0.38),
               fontWeight: FontWeight.bold,
@@ -866,7 +866,13 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
       ),
     );
   }
-
+  String? fcmToken;
+  getToken(){
+    FirebaseMessaging.instance.getToken().then((value) {
+      fcmToken = value;
+      print('____sdsdsdfsdf______${fcmToken}_________');
+    });
+  }
   setDontHaveAcc() {
     return Padding(
       padding: const EdgeInsetsDirectional.only(top: 25.0),
@@ -941,45 +947,50 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+     // resizeToAvoidBottomInset: true,
       backgroundColor: Theme.of(context).colorScheme.white,
       key: _scaffoldKey,
-      body: isNetworkAvail
-          ? SingleChildScrollView(
-              padding: EdgeInsets.only(
-                top: 1,
-                left: 23,
-                right: 23,
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              child: Form(
-                key: _formkey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    getLogo(),
-                   // Image.asset('assets/images/png/splashlogo-removebg-preview.png',height: 200,width: 200,),
-                    signInTxt(),
-                    signInSubTxt(),
-                   // loginBtnText(),
-                   //  Text(
-                   //    'OTP',
-                   //    style: TextStyle(
-                   //        color:  colors.secondary, fontSize: 21),
-                   //  ),
-                    // verifyCodeTxt(),
-                   isMobile==true?setCodeWithMono():
-                    setMobileNo(),
+      body:
 
-                    //isMobile==false?setPass():
-                  //  forgetPass(),
-                   //isMobile==false?forgetPass():SizedBox(),
-                    loginBtn(),
-                  //  setDontHaveAcc(),
-                  ],
-                ),
+      isNetworkAvail
+          ? SingleChildScrollView(
+            child: Form(
+              key: _formkey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // getLogo(),
+                  SizedBox(height: 29,),
+                  Image.asset('assets/images/png/curveframe.png',),
+                 // Image.asset('assets/images/png/splashlogo-removebg-preview.png',height: 200,width: 200,),
+                 Padding(
+                   padding: const EdgeInsets.only(top: 90,right: 10,left: 10),
+                   child: Column(
+                     children: [
+                       signInTxt(),
+                       signInSubTxt(),
+                       // loginBtnText(),
+                       //  Text(
+                       //    'OTP',
+                       //    style: TextStyle(
+                       //        color:  colors.secondary, fontSize: 21),
+                       //  ),
+                       // verifyCodeTxt(),
+                       isMobile==true?setCodeWithMono():
+                       setMobileNo(),
+
+                       //isMobile==false?setPass():
+                       //  forgetPass(),
+                       //isMobile==false?forgetPass():SizedBox(),
+                       loginBtn(),
+                       //  setDontHaveAcc(),
+                     ],
+                   ),
+                 )
+                ],
               ),
-            )
+            ),
+          )
           : NoInterNet(
               setStateNoInternate: setStateNoInternate,
               buttonSqueezeanimation: buttonSqueezeanimation,
@@ -991,8 +1002,8 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
   Widget getLogo() {
     return Container(
       alignment: Alignment.center,
-      padding: const EdgeInsets.only(top: 10),
-      child:Image.asset('assets/images/png/splash.png',height: 350,width: 350,)
+      // padding: const EdgeInsets.only(top: 10),
+      child:Image.asset('assets/images/png/curveframe.png',height: 350,width: double.infinity,)
     );
   }
 
